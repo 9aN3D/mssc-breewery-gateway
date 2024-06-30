@@ -17,6 +17,9 @@ public class LocalHostRouteConfig {
                 .route(route -> route.path("/api/v1/customers/**")
                         .uri("http://localhost:8081")
                         .id("beer-order-service"))
+                .route(route -> route.path("/api/v1/beers/*/inventories")
+                        .uri("http://localhost:8082")
+                        .id("beer-inventory-service"))
                 .build();
     }
 
