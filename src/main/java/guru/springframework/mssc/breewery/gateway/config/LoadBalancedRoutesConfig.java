@@ -20,8 +20,14 @@ public class LoadBalancedRoutesConfig {
                         .uri("lb://beer-order-service")
                         .id("beer-order-service"))
                 .route(route -> route.path("/api/v1/beers/*/inventories")
+                        .filters(filter -> filter.circuitBreaker(config -> config.setName("inventoryCB")
+                                .setFallbackUri("forward:/inventory-failover")
+                                .setRouteId("inv-failover")))
                         .uri("lb://beer-inventory-service")
                         .id("beer-inventory-service"))
+                .route(route -> route.path("/inventory-failover/**")
+                        .uri("lb://inventory-failover-service")
+                        .id("inventory-failover-service"))
                 .build();
     }
 
